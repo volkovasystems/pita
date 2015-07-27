@@ -1,6 +1,6 @@
 {
   "name": "pita",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Script minifier using gulp. Based from the Greek word for flat bread.",
   "main": "pita.min.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/volkovasystems/pita/issues"
   },
   "homepage": "https://github.com/volkovasystems/pita#readme",
-  "devDependencies": {
+  "dependencies": {
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-rename": "^1.2.2",
