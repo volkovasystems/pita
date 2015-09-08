@@ -2,7 +2,8 @@ var gulp = require( "gulp" );
 var uglify = require( "gulp-uglify" );
 var rename = require( "gulp-rename" );
 var sourcemaps = require( "gulp-sourcemaps" );
-var clean = require( "gulp-clean" );
+var del = require( "del" );
+var vinylPaths = require( "vinyl-paths" );
 var fs = require( "fs" );
 var path = require( "path" );
 
@@ -18,7 +19,7 @@ var pita = function pita( script ){
 	gulp.task( "clean", function cleanTask( ){
 		console.log( "cleaning previous script version ", path.resolve( pathSteps, minifiedScriptPath ) );
 		return gulp.src( path.resolve( pathSteps, minifiedScriptPath ) )
-			.pipe( clean( { "force": true } ) );
+			.pipe( vinylPaths( del ) );
 	} );
 
 	gulp.task( "default",
@@ -26,8 +27,9 @@ var pita = function pita( script ){
 		function defaultTask( ){
 			console.log( "flattening script ", path.resolve( pathSteps, scriptPath ) );
 			return gulp.src( path.resolve( pathSteps, scriptPath ) )
+				.pipe( sourcemaps.init( ) )
 				.pipe( uglify( ) )
-				.pipe( rename( path.resolve( pathSteps, minifiedScriptPath ) ) )
+				.pipe( rename( minifiedScriptPath ) )
 				.pipe( sourcemaps.write( pathSteps ) )
 				.pipe( gulp.dest( pathSteps ) );
 		} );
