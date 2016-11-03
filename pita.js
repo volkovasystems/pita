@@ -77,13 +77,13 @@ const uglify = require( "gulp-uglify" );
 const vinylFS = require( "vinyl-fs" );
 const vinylPath = require( "vinyl-paths" );
 
-var pita = function pita( script, callback ){
-	callback = called(callback);
+this.pita = function pita( script, callback ){
+	callback = called( callback );
 
-	let name = script.match( /([a-zA-Z0-9\-\_]+)\.js$/ )[ 1 ];
+	let name = script.match( /([a-zA-Z0-9\-\_\.]+?)\.js$/ )[ 1 ];
 	let compactName = `${ name }.compact.js`;
-	let compactFile = script.replace( /[a-zA-Z0-9\-\_]+\.js$/, compactName );
-	let directory = script.split( /[a-zA-Z0-9\-\_]+\.js$/ )[ 0 ];
+	let compactFile = script.replace( /[a-zA-Z0-9\-\_\.]+?\.js$/, compactName );
+	let directory = script.split( /[a-zA-Z0-9\-\_\.]+?\.js$/ )[ 0 ];
 
 	series( [
 		function clean( callback ){
@@ -108,7 +108,12 @@ var pita = function pita( script, callback ){
 				.on( "end", callback )
 				.on( "error", callback )
 				.pipe( sourcemap.init( ) )
-				.pipe( babel( { "presets": [ "es2015", "react" ] } ) )
+				.pipe( babel( {
+					"presets": [
+						require( "babel-preset-es2015" ),
+						require( "babel-preset-react" )
+					]
+				} ) )
 				.pipe( uglify( ) )
 				.pipe( rename( compactName ) )
 				.pipe( sourcemap.write( ) )
@@ -126,4 +131,4 @@ var pita = function pita( script, callback ){
 	return compactFile;
 };
 
-module.exports = pita;
+module.exports = this.pita;
